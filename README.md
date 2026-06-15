@@ -411,6 +411,29 @@ This project demonstrates practical use of:
 
 ---
 
+## Streamlit Application
+
+This project also includes an interactive Streamlit application.
+
+The app allows users to adjust market assumptions, insurance risk assumptions, product benefit assumptions, and simulation settings.
+
+Users can run the stochastic pricing engine directly from the browser and view:
+
+- Estimated fair price
+- Monte Carlo standard error
+- Competing risk distribution
+- Simulated asset paths
+- Product cashflows
+- Black-Scholes benchmark
+- Model validation results
+- Sensitivity analysis
+
+Run locally:
+
+```bash
+streamlit run app.py
+
+
 ## Disclaimer
 
 This project is for educational and portfolio purposes only. It is not intended for real-world insurance pricing, investment decision-making, regulatory valuation, or financial advice.
