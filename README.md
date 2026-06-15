@@ -64,7 +64,7 @@ The fund value is simulated using Geometric Brownian Motion.
 
 The continuous-time model is:
 
-$$ dS_t = rS_t\,dt + \sigma S_t\,dW_t $$
+$$ dS_t = rS_tdt + \sigma S_tdW_t $$
 
 where:
 
