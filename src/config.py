@@ -62,3 +62,16 @@ class InsuranceRiskConfig:
     death_rate: float = 0.0012
     lapse_rate: float = 0.0045
     disability_rate: float = 0.008
+
+@dataclass
+class ProductConfig:
+    """
+    Configuration for the insurance product.
+
+    For simplicity, we assume a single product type with fixed parameters.
+    In a more complex model, this could include multiple product types, each with its own parameters and features.
+    """
+    maturity_guarantee: float = 120_000
+    death_benefit: float = 130_000
+    disability_benefit: float = 110_000
+    surrender_charge: float = 0.10
