@@ -48,7 +48,7 @@ def plot_event_distribution(
     Plot the distribution of competing risk outcomes.
     """
 
-    event_counts = risk_results["event_type"].value_counts()
+    event_counts = risk_results["Event_Type"].value_counts()
 
     plt.figure(figsize=(8, 5))
     event_counts.plot(kind="bar")
