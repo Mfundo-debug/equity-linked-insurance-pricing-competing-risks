@@ -8,6 +8,7 @@ from src.config import (
     ProductConfig
 )
 
+from src.export_results import export_pricing_outputs
 from src.pricing_engine import run_pricing_engine
 
 
@@ -132,6 +133,7 @@ def run_maturity_guarantee_sensitivity(
             risk_config=risk_config,
             product_config=adjusted_product_config
         )
+        
 
         cashflow_results = output["cashflow_results"]
 
@@ -155,4 +157,5 @@ def run_maturity_guarantee_sensitivity(
     sensitivity_df = pd.DataFrame(sensitivity_results)
 
     return sensitivity_df
+
 

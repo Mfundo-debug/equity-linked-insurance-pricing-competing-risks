@@ -7,6 +7,7 @@ from src.config import (
     ProductConfig
 )
 
+from src.export_results import export_pricing_outputs
 from src.market_model import simulate_brownian_motion, simulate_gbm_paths
 from src.competing_risks import simulate_competing_risks
 from src.product import calculate_product_cashflows
@@ -102,3 +103,6 @@ def run_pricing_engine(
     }
 
     return pricing_output
+    
+
+    

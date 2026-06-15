@@ -4,7 +4,10 @@ from src.config import (
     InsuranceRiskConfig,
     ProductConfig
 )
-
+from src.export_results import (
+    export_pricing_outputs,
+    export_sensitivity_results
+)
 from src.pricing_engine import run_pricing_engine
 from src.sensitivity_analysis import(run_volatility_sensitivity,
                                      run_lapse_rate_sensitivity,
@@ -54,6 +57,10 @@ def main():
         sim_config=sim_config,
         risk_config=risk_config,
         product_config=product_config
+    )
+    export_pricing_outputs(
+        pricing_output=output,
+        output_dir="outputs/results"
     )
 
     print("Pricing engine completed successfully.")
@@ -132,6 +139,12 @@ def main():
         risk_config=risk_config,
         product_config=product_config
     )
+    export_sensitivity_results(
+        volatility_sensitivity_df=sensitivity_df,
+        lapse_sensitivity_df=lapse_sensitivity_df,
+        guarantee_sensitivity_df=guarantee_sensitivity_df,
+        output_dir="outputs/results"
+    )
 
     print("\nMaturity guarantee sensitivity analysis:")
     print(guarantee_sensitivity_df)
@@ -153,7 +166,7 @@ def main():
         f"R{black_scholes_output['guaranteed_maturity_benchmark']:,.2f}"
     )   
     
-   
+print("\nCSV files with pricing outputs and sensitivity results have been saved to the 'outputs/results' directory.")
 
 if __name__ == "__main__":
     main()

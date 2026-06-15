@@ -1,0 +1,8 @@
+Metric,Value
+Estimated Fair Price,101238.84936072223
+Monte Carlo Standard Error,635.4932060105143
+Number of Simulations,10000.0
+Contract Term,10.0
+Initial Asset Value,100000.0
+Risk-Free Rate,0.08
+Volatility,0.22
