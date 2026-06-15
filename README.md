@@ -200,7 +200,7 @@ The fair price increases as the guaranteed maturity benefit increases. This refl
 
 ### Competing Risk Distribution
 
-![Competing Risk Distribution](outputs/figures/competing_risk_distribution.png)
+![Competing Risk Distribution](outputs/figures/event_distribution.png)
 
 ### Discounted Payoff Distribution
 
