@@ -81,7 +81,7 @@ def calculate_product_cashflows(
             "event_time": event_time,
             "event_step": event_step,
             "fund_value_at_event": fund_value_at_event,
-            "Payoff": payoff,
+            "payoff": payoff,
             "discount_factor": discount_factor,
             "discounted_payoff": discounted_payoff
         })

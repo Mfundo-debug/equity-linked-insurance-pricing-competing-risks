@@ -7,7 +7,8 @@ from src.config import (
 
 from src.pricing_engine import run_pricing_engine
 from src.sensitivity_analysis import(run_volatility_sensitivity,
-                                     run_lapse_rate_sensitivity) 
+                                     run_lapse_rate_sensitivity,
+                                     run_maturity_guarantee_sensitivity) 
 from src.black_scholes import guaranteed_maturity_benchmark 
 
 from src.visualisations import (
@@ -16,7 +17,8 @@ from src.visualisations import (
     plot_discounted_payoff_distribution,
     plot_average_payoff_by_event,
     plot_volatility_sensitivity,
-    plot_lapse_rate_sensitivity
+    plot_lapse_rate_sensitivity,
+    plot_maturity_guarantee_sensitivity
 )
 
 
@@ -121,8 +123,22 @@ def main():
     plot_lapse_rate_sensitivity(
         sensitivity_df=lapse_sensitivity_df
     )
+    guarantee_values = [100_000, 110_000, 120_000, 130_000, 140_000, 150_000]
 
+    guarantee_sensitivity_df = run_maturity_guarantee_sensitivity(
+        guarantee_values=guarantee_values,
+        market_config=market_config,
+        sim_config=sim_config,
+        risk_config=risk_config,
+        product_config=product_config
+    )
 
+    print("\nMaturity guarantee sensitivity analysis:")
+    print(guarantee_sensitivity_df)
+
+    plot_maturity_guarantee_sensitivity(
+        sensitivity_df=guarantee_sensitivity_df
+    ) 
 
     black_scholes_output = guaranteed_maturity_benchmark(
         market_config=market_config,

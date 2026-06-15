@@ -102,3 +102,57 @@ def run_lapse_rate_sensitivity(
     sensitivity_df = pd.DataFrame(sensitivity_results)
 
     return sensitivity_df
+
+
+def run_maturity_guarantee_sensitivity(
+    guarantee_values: list[float],
+    market_config: MarketConfig,
+    sim_config: SimulationConfig,
+    risk_config: InsuranceRiskConfig,
+    product_config: ProductConfig
+) -> pd.DataFrame:
+    """
+    Run sensitivity analysis on the maturity guarantee.
+
+    This shows how the estimated fair price changes when the guaranteed
+    maturity benefit is increased or decreased.
+    """
+
+    sensitivity_results = []
+
+    for guarantee in guarantee_values:
+        adjusted_product_config = replace(
+            product_config,
+            maturity_guarantee=guarantee
+        )
+
+        output = run_pricing_engine(
+            market_config=market_config,
+            sim_config=sim_config,
+            risk_config=risk_config,
+            product_config=adjusted_product_config
+        )
+
+        cashflow_results = output["cashflow_results"]
+
+        survival_cashflows = cashflow_results[
+            cashflow_results["event_type"] == "Survival"
+        ]
+
+        if "payoff" in survival_cashflows.columns:
+            average_survival_payoff = survival_cashflows["payoff"].mean()
+        else:
+            average_survival_payoff = None
+
+        sensitivity_results.append({
+            "maturity_guarantee": guarantee,
+            "fair_price": output["fair_price"],
+            "standard_error": output["standard_error"],
+            "survival_percentage": output["event_distribution"].get("Survival", 0),
+            "average_survival_payoff": average_survival_payoff
+        })
+
+    sensitivity_df = pd.DataFrame(sensitivity_results)
+
+    return sensitivity_df
+

@@ -127,4 +127,24 @@ def plot_lapse_rate_sensitivity(sensitivity_df: pd.DataFrame) -> None:
     plt.xlabel("Annual Lapse Rate")
     plt.ylabel("Estimated Fair Price")
     plt.tight_layout()
-    plt.show()    
+    plt.show() 
+
+    
+def plot_maturity_guarantee_sensitivity(sensitivity_df: pd.DataFrame) -> None:
+    """
+    Plot the estimated fair price against different maturity guarantees.
+    """
+
+    plt.figure(figsize=(8, 5))
+
+    plt.plot(
+        sensitivity_df["maturity_guarantee"],
+        sensitivity_df["fair_price"],
+        marker="o"
+    )
+
+    plt.title("Sensitivity of Fair Price to Maturity Guarantee")
+    plt.xlabel("Maturity Guarantee")
+    plt.ylabel("Estimated Fair Price")
+    plt.tight_layout()
+    plt.show()   
