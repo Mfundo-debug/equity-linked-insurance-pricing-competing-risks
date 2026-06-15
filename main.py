@@ -7,6 +7,7 @@ from src.config import (
 
 from src.pricing_engine import run_pricing_engine
 from src.sensitivity_analysis import run_volatility_sensitivity
+from src.black_scholes import guaranteed_maturity_benchmark 
 
 from src.visualisations import (
     plot_asset_paths,
@@ -101,6 +102,19 @@ def main():
     plot_volatility_sensitivity(
         sensitivity_df=sensitivity_df
     )
+
+    black_scholes_output = guaranteed_maturity_benchmark(
+        market_config=market_config,
+        product_config=product_config,
+        sim_config=sim_config
+    )
+
+    print("\nBlack-Scholes benchmark:")
+    print(f"Embedded guarantee value: R{black_scholes_output['embedded_put_value']:,.2f}")
+    print(
+        "Guaranteed maturity benchmark: "
+        f"R{black_scholes_output['guaranteed_maturity_benchmark']:,.2f}"
+    )   
     
    
 
