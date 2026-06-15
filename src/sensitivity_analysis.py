@@ -52,3 +52,53 @@ def run_volatility_sensitivity(
     sensitivity_df = pd.DataFrame(sensitivity_results)
 
     return sensitivity_df
+
+
+def run_lapse_rate_sensitivity(
+    lapse_rate_values: list[float],
+    market_config: MarketConfig,
+    sim_config: SimulationConfig,
+    risk_config: InsuranceRiskConfig,
+    product_config: ProductConfig
+) -> pd.DataFrame:
+    """
+    Run sensitivity analysis on the lapse rate.
+
+    This shows how the estimated fair price changes when policyholders
+    are more or less likely to cancel the policy before maturity.
+
+    Lapse is important in insurance pricing because it affects whether
+    the insurer pays the maturity guarantee, death benefit, disability
+    benefit, or surrender value.
+    """
+
+    sensitivity_results = []
+
+    for lapse_rate in lapse_rate_values:
+        adjusted_risk_config = replace(
+            risk_config,
+            lapse_rate=lapse_rate
+        )
+
+        output = run_pricing_engine(
+            market_config=market_config,
+            sim_config=sim_config,
+            risk_config=adjusted_risk_config,
+            product_config=product_config
+        )
+
+        event_distribution = output["event_distribution"]
+
+        sensitivity_results.append({
+            "input_lapse_rate": lapse_rate,
+            "fair_price": output["fair_price"],
+            "standard_error": output["standard_error"],
+            "survival_percentage": event_distribution.get("Survival", 0),
+            "lapse_percentage": event_distribution.get("Lapse", 0),
+            "death_percentage": event_distribution.get("Death", 0),
+            "disability_percentage": event_distribution.get("Disability", 0)
+        })
+
+    sensitivity_df = pd.DataFrame(sensitivity_results)
+
+    return sensitivity_df

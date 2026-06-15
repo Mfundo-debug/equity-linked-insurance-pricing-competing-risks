@@ -108,4 +108,23 @@ def plot_volatility_sensitivity(sensitivity_df: pd.DataFrame) -> None:
     plt.xlabel("Volatility")
     plt.ylabel("Estimated Fair Price")
     plt.tight_layout()
+    plt.show()   
+
+def plot_lapse_rate_sensitivity(sensitivity_df: pd.DataFrame) -> None:
+    """
+    Plot the estimated fair price against different lapse-rate assumptions.
+    """
+
+    plt.figure(figsize=(8, 5))
+
+    plt.plot(
+        sensitivity_df["input_lapse_rate"],
+        sensitivity_df["fair_price"],
+        marker="o"
+    )
+
+    plt.title("Sensitivity of Fair Price to Lapse Rate")
+    plt.xlabel("Annual Lapse Rate")
+    plt.ylabel("Estimated Fair Price")
+    plt.tight_layout()
     plt.show()    
