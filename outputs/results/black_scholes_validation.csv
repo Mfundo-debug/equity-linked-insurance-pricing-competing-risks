@@ -1,0 +1,6 @@
+Metric,Value
+Monte Carlo Maturity Guarantee Value,105624.82822463417
+Monte Carlo Standard Error,755.3977779952335
+Black-Scholes Benchmark Value,105056.1128338383
+Absolute Difference,568.7153907958709
+Percentage Difference,0.5413444067699116

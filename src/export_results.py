@@ -77,3 +77,18 @@ def export_sensitivity_results(
         output_path / "maturity_guarantee_sensitivity.csv",
         index=False
     )
+
+def export_validation_results(
+    validation_results: pd.DataFrame,
+    output_dir: str = "outputs/results"
+) -> None:
+    """
+    Export model validation results to CSV.
+    """
+
+    output_path = create_output_directory(output_dir)
+
+    validation_results.to_csv(
+        output_path / "black_scholes_validation.csv",
+        index=False
+    )

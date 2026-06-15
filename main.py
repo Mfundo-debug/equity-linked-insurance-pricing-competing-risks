@@ -6,14 +6,15 @@ from src.config import (
 )
 from src.export_results import (
     export_pricing_outputs,
-    export_sensitivity_results
+    export_sensitivity_results,
+    export_validation_results
 )
 from src.pricing_engine import run_pricing_engine
 from src.sensitivity_analysis import(run_volatility_sensitivity,
                                      run_lapse_rate_sensitivity,
                                      run_maturity_guarantee_sensitivity) 
 from src.black_scholes import guaranteed_maturity_benchmark 
-
+from src.model_validation import validate_maturity_guarantee_against_black_scholes
 from src.visualisations import (
     plot_asset_paths,
     plot_event_distribution,
@@ -172,7 +173,21 @@ def main():
         "Guaranteed maturity benchmark: "
         f"R{black_scholes_output['guaranteed_maturity_benchmark']:,.2f}"
     )   
+    validation_results = validate_maturity_guarantee_against_black_scholes(
+        asset_paths=output["asset_paths"],
+        market_config=market_config,
+        product_config=product_config,
+        sim_config=sim_config
+    )
+
     
+    export_validation_results(
+        validation_results=validation_results,
+        output_dir="outputs/results"
+    )
+    print("\nModel validation against Black-Scholes:")
+    print(validation_results)
+
 print("\nCSV files with pricing outputs and sensitivity results have been saved to the 'outputs/results' directory.")
 print("Figures with visualisations have been saved to the 'outputs/figures' directory.")
 
