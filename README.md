@@ -88,31 +88,15 @@ where $Z \sim N(0,1)$.
 Competing risks formula
 The total competing risk intensity is:
 
-$$
-\lambda_{\text{total}}
-=
-\lambda_{\text{death}}
-+
-\lambda_{\text{lapse}}
-+
-\lambda_{\text{disability}}
-$$
+$$\lambda_{\text{total}} = \lambda_{\text{death}} + \lambda_{\text{lapse}} + \lambda_{\text{disability}}$$
 
 The probability of an event occurring during a small time interval $\Delta t$ is:
 
-$$
-p_{\text{event}}
-=
-1 - e^{-\lambda_{\text{total}}\Delta t}
-$$
+$$p_{\text{event}} = 1 - e^{-\lambda_{\text{total}}\Delta t}$$
 
 Given that an event occurs, the probability that the event is death is:
 
-$$
-P(\text{Death} \mid \text{Event})
-=
-\frac{\lambda_{\text{death}}}{\lambda_{\text{total}}}
-$$
+$$P(\text{Death} \mid \text{Event}) = \frac{\lambda_{\text{death}}}{\lambda_{\text{total}}}$$
 
 The same logic is used for lapse and disability.
 
@@ -160,55 +144,27 @@ The same logic is used for lapse and disability.
 Embedded guarantee decomposition
 The maturity guarantee can be decomposed as:
 
-$$
-\max(S_T, G)
-=
-S_T + \max(G - S_T, 0)
-$$
+$$\max(S_T, G) =S_T + \max(G - S_T, 0)$$
 
 This shows that the guarantee component behaves like a European put option.
 Black-Scholes put option formula
 The Black-Scholes value of the embedded put option is:
 
-$$
-P
-=
-G e^{-rT}N(-d_2)
--
-S_0N(-d_1)
-$$
+$$P = G e^{-rT}N(-d_2) - S_0N(-d_1)$$
 
 where:
 
-$$
-d_1
-=
-\frac{
-\ln\left(\frac{S_0}{G}\right)
-+
-\left(r + \frac{1}{2}\sigma^2\right)T
-}{
-\sigma\sqrt{T}
-}
-$$
+$$d_1 = \frac{\ln\left(\frac{S_0}{G}\right)+\left(r + \frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}$$
 
 and
 
-$$
-d_2
-=
-d_1 - \sigma\sqrt{T}
-$$
+$$d_2 = d_1 - \sigma\sqrt{T}$$
+
+
 Discounted cashflow valuation formula
 The fair price is estimated as the expected discounted value of future cashflows:
 
-$$
-\text{Fair Price}
-=
-\mathbb{E}\left[
-e^{-r\tau}C_{\tau}
-\right]
-$$
+$$\text{Fair Price} = \mathbb{E}\left[e^{-r\tau}C_{\tau}\right]$$
 
 where:
 
@@ -218,13 +174,7 @@ where:
 Monte Carlo estimator
 In the Monte Carlo simulation, the fair price is estimated as:
 
-$$
-\hat{V}
-=
-\frac{1}{N}
-\sum_{i=1}^{N}
-e^{-r\tau_i}C_{\tau_i}
-$$
+$$\hat{V} = \frac{1}{N} \sum_{i=1}^{N}e^{-r\tau_i}C_{\tau_i}$$
 
 where $N$ is the number of simulated paths.
 
@@ -431,7 +381,7 @@ Users can run the stochastic pricing engine directly from the browser and view:
 
 Click the link to run test below:
 
-https://equity-insurance-pricing.streamlit.app/
+[Launch the Streamlit App](https://equity-insurance-pricing.streamlit.app/)
 
 
 ## Disclaimer
