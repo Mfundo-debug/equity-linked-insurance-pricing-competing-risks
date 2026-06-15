@@ -428,10 +428,10 @@ Users can run the stochastic pricing engine directly from the browser and view:
 - Model validation results
 - Sensitivity analysis
 
-Run locally:
 
-```bash
-streamlit run app.py
+Click the link to run test below:
+
+https://equity-insurance-pricing.streamlit.app/
 
 
 ## Disclaimer
