@@ -83,19 +83,23 @@ def main():
     plot_asset_paths(
         time_grid=output["time_grid"],
         asset_paths=output["asset_paths"],
-        n_paths=100
+        n_paths=100,
+        save_path="outputs/figures/simulated_asset_paths.png"
     )
 
     plot_event_distribution(
-        risk_results=output["risk_results"]
+        risk_results=output["risk_results"],
+        save_path="outputs/figures/event_distribution.png"
     )
 
     plot_discounted_payoff_distribution(
-        cashflow_results=output["cashflow_results"]
+        cashflow_results=output["cashflow_results"],
+        save_path="outputs/figures/discounted_payoff_distribution.png"
     )
 
     plot_average_payoff_by_event(
-        cashflow_results=output["cashflow_results"]
+        cashflow_results=output["cashflow_results"],
+        save_path="outputs/figures/average_payoff_by_event.png"
     )
     volatility_values = [0.10, 0.15, 0.20, 0.22, 0.25, 0.30, 0.35]
 
@@ -111,7 +115,8 @@ def main():
     print(sensitivity_df)
 
     plot_volatility_sensitivity(
-        sensitivity_df=sensitivity_df
+        sensitivity_df=sensitivity_df,
+        save_path="outputs/figures/volatility_sensitivity.png"
     )
 
     lapse_rate_values = [0.01, 0.025, 0.045, 0.06, 0.08, 0.10, 0.12]
@@ -128,7 +133,8 @@ def main():
     print(lapse_sensitivity_df)
 
     plot_lapse_rate_sensitivity(
-        sensitivity_df=lapse_sensitivity_df
+        sensitivity_df=lapse_sensitivity_df,
+        save_path="outputs/figures/lapse_rate_sensitivity.png"
     )
     guarantee_values = [100_000, 110_000, 120_000, 130_000, 140_000, 150_000]
 
@@ -150,8 +156,9 @@ def main():
     print(guarantee_sensitivity_df)
 
     plot_maturity_guarantee_sensitivity(
-        sensitivity_df=guarantee_sensitivity_df
-    ) 
+        sensitivity_df=guarantee_sensitivity_df,
+        save_path="outputs/figures/maturity_guarantee_sensitivity.png"
+    )
 
     black_scholes_output = guaranteed_maturity_benchmark(
         market_config=market_config,
@@ -167,6 +174,7 @@ def main():
     )   
     
 print("\nCSV files with pricing outputs and sensitivity results have been saved to the 'outputs/results' directory.")
+print("Figures with visualisations have been saved to the 'outputs/figures' directory.")
 
 if __name__ == "__main__":
     main()
