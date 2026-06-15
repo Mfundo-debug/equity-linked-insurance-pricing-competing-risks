@@ -49,3 +49,16 @@ class SimulationConfig:
     @property
     def dt(self) -> float:
         return 1 / self.steps_per_year
+    
+@dataclass
+class InsuranceRiskConfig:
+    """"
+    Configuration for the insurance competing risks.
+
+    These are annual risk intensities.
+    They represet the force/rate at which each event may occur, and are used to model the probability of each event happening over time.
+    """
+
+    death_rate: float = 0.0012
+    lapse_rate: float = 0.0045
+    disability_rate: float = 0.008
