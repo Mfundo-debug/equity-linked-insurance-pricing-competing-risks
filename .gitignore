@@ -30,3 +30,25 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+# Rendered README / Quarto HTML outputs
+README.html
+README_files/
+*_files/
+
+# Quarto source files if not needed
+*.qmd
+
+# Generated web assets from rendered documents
+*.html
+*.css
+*.js
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.map
+
+# OS files
+.DS_Store
+Thumbs.db

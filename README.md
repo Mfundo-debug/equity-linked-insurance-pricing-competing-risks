@@ -47,14 +47,12 @@ The product pays different benefits depending on the event outcome.
 
 The maturity benefit is:
 
-```text
-max(S_T, G)
-```
+$$ \max(S_T, G) $$
 
 where:
 
-* `S_T` is the fund value at maturity
-* `G` is the guaranteed maturity amount
+* $S_T$ is the fund value at maturity
+* $G$ is the guaranteed maturity amount
 
 This payoff contains an embedded option-like guarantee.
 
@@ -66,30 +64,57 @@ The fund value is simulated using Geometric Brownian Motion.
 
 The continuous-time model is:
 
-```text
-dS_t = rS_tdt + sigma S_tdW_t
-```
+$$ dS_t = rS_t\,dt + \sigma S_t\,dW_t $$
 
 where:
 
 | Symbol  | Meaning                 |
 | ------- | ----------------------- |
-| `S_t`   | Fund value at time t    |
-| `r`     | Risk-free interest rate |
-| `sigma` | Asset volatility        |
-| `W_t`   | Brownian motion         |
+| $S_t$   | Fund value at time t    |
+| $r$     | Risk-free interest rate |
+| $sigma$ | Asset volatility        |
+| $W_t$   | Brownian motion         |
 
 The discrete simulation formula is:
 
-```text
-S(t+dt) = S(t) * exp((r - 0.5*sigma^2)dt + sigma * sqrt(dt) * Z)
-```
+$$ S_{t+\Delta t} = S_t \exp\left[ \left(r - \frac{1}{2}\sigma^2\right)\Delta t + \sigma \sqrt{\Delta t}Z \right] $$
 
-where `Z` is a standard normal random variable.
+where $Z \sim N(0,1)$.
 
 ---
 
 ## Competing Risks Model
+
+Competing risks formula
+The total competing risk intensity is:
+
+$$
+\lambda_{\text{total}}
+=
+\lambda_{\text{death}}
++
+\lambda_{\text{lapse}}
++
+\lambda_{\text{disability}}
+$$
+
+The probability of an event occurring during a small time interval $\Delta t$ is:
+
+$$
+p_{\text{event}}
+=
+1 - e^{-\lambda_{\text{total}}\Delta t}
+$$
+
+Given that an event occurs, the probability that the event is death is:
+
+$$
+P(\text{Death} \mid \text{Event})
+=
+\frac{\lambda_{\text{death}}}{\lambda_{\text{total}}}
+$$
+
+The same logic is used for lapse and disability.
 
 The model includes three active insurance decrements:
 
@@ -131,15 +156,77 @@ The event distribution from the simulation is approximately:
 
 ## Black-Scholes Benchmark
 
+The same logic is used for lapse and disability.
+Embedded guarantee decomposition
 The maturity guarantee can be decomposed as:
 
-```text
-max(S_T, G) = S_T + max(G - S_T, 0)
-```
+$$
+\max(S_T, G)
+=
+S_T + \max(G - S_T, 0)
+$$
 
-This means the guarantee component behaves like a European put option.
+This shows that the guarantee component behaves like a European put option.
+Black-Scholes put option formula
+The Black-Scholes value of the embedded put option is:
 
-The project therefore includes a Black-Scholes benchmark for the embedded guarantee.
+$$
+P
+=
+G e^{-rT}N(-d_2)
+-
+S_0N(-d_1)
+$$
+
+where:
+
+$$
+d_1
+=
+\frac{
+\ln\left(\frac{S_0}{G}\right)
++
+\left(r + \frac{1}{2}\sigma^2\right)T
+}{
+\sigma\sqrt{T}
+}
+$$
+
+and
+
+$$
+d_2
+=
+d_1 - \sigma\sqrt{T}
+$$
+Discounted cashflow valuation formula
+The fair price is estimated as the expected discounted value of future cashflows:
+
+$$
+\text{Fair Price}
+=
+\mathbb{E}\left[
+e^{-r\tau}C_{\tau}
+\right]
+$$
+
+where:
+
+- $\tau$ is the event time
+- $C_{\tau}$ is the cashflow paid at the event time
+- $r$ is the risk-free discount rate
+Monte Carlo estimator
+In the Monte Carlo simulation, the fair price is estimated as:
+
+$$
+\hat{V}
+=
+\frac{1}{N}
+\sum_{i=1}^{N}
+e^{-r\tau_i}C_{\tau_i}
+$$
+
+where $N$ is the number of simulated paths.
 
 Current benchmark result:
 
