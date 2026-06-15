@@ -1,5 +1,3 @@
-import matplotlib.pyplot as plt
-
 from src.config import (
     MarketConfig,
     SimulationConfig,
@@ -8,6 +6,15 @@ from src.config import (
 )
 
 from src.pricing_engine import run_pricing_engine
+from src.sensitivity_analysis import run_volatility_sensitivity
+
+from src.visualisations import (
+    plot_asset_paths,
+    plot_event_distribution,
+    plot_discounted_payoff_distribution,
+    plot_average_payoff_by_event,
+    plot_volatility_sensitivity
+)
 
 
 def main():
@@ -44,11 +51,6 @@ def main():
         product_config=product_config
     )
 
-    time_grid = output["time_grid"]
-    asset_paths = output["asset_paths"]
-    risk_results = output["risk_results"]
-    cashflow_results = output["cashflow_results"]
-
     print("Pricing engine completed successfully.")
 
     print("\nPricing summary:")
@@ -58,7 +60,7 @@ def main():
     print(output["event_distribution"])
 
     print("\nFirst five product cashflows:")
-    print(cashflow_results.head())
+    print(output["cashflow_results"].head())
 
     print("\nEstimated fair price of the insurance product:")
     print(f"R{output['fair_price']:,.2f}")
@@ -66,38 +68,41 @@ def main():
     print("\nMonte Carlo standard error of the fair price estimate:")
     print(f"R{output['standard_error']:,.2f}")
 
-    plt.figure(figsize=(10, 6))
+    plot_asset_paths(
+        time_grid=output["time_grid"],
+        asset_paths=output["asset_paths"],
+        n_paths=100
+    )
 
-    for i in range(50):
-        plt.plot(time_grid, asset_paths[i], alpha=0.4)
+    plot_event_distribution(
+        risk_results=output["risk_results"]
+    )
 
-    plt.title("Simulated Asset Paths using Geometric Brownian Motion")
-    plt.xlabel("Time in Years")
-    plt.ylabel("Asset/Fund Value")
-    plt.tight_layout()
-    plt.show()
+    plot_discounted_payoff_distribution(
+        cashflow_results=output["cashflow_results"]
+    )
 
-    event_counts = risk_results["Event_Type"].value_counts()
+    plot_average_payoff_by_event(
+        cashflow_results=output["cashflow_results"]
+    )
+    volatility_values = [0.10, 0.15, 0.20, 0.22, 0.25, 0.30, 0.35]
 
-    plt.figure(figsize=(8, 5))
-    event_counts.plot(kind="bar")
+    sensitivity_df = run_volatility_sensitivity(
+        volatility_values=volatility_values,
+        market_config=market_config,
+        sim_config=sim_config,
+        risk_config=risk_config,
+        product_config=product_config
+    )
 
-    plt.title("Distribution of Competing Risk Events")
-    plt.xlabel("Event Type")
-    plt.ylabel("Number of Simulations")
-    plt.xticks(rotation=0)
-    plt.tight_layout()
-    plt.show()
+    print("\nVolatility sensitivity analysis:")
+    print(sensitivity_df)
 
-    plt.figure(figsize=(9, 5))
-    plt.hist(cashflow_results["discounted_payoff"], bins=50)
-
-    plt.title("Distribution of Discounted Payoffs")
-    plt.xlabel("Discounted Payoff")
-    plt.ylabel("Frequency")
-    plt.tight_layout()
-    plt.show()
-
+    plot_volatility_sensitivity(
+        sensitivity_df=sensitivity_df
+    )
+    
+   
 
 if __name__ == "__main__":
     main()
