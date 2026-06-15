@@ -40,9 +40,8 @@ The investment fund is modelled using Geometric Brownian Motion.
 
 The continuous-time model is:
 
-$$
-dS_t = rS_t,dt + \sigma S_t,dW_t
-$$
+$$ dS_t = rS_tdt + \sigma S_tdW_t $$
+
 
 where:
 
@@ -57,23 +56,10 @@ This model assumes that the fund value evolves randomly over time, with uncertai
 
 The discrete simulation formula used in the project is:
 
-$$
-S_{t+\Delta t}
-==============
+$$ S_{t+\Delta t} = S_t \exp\left[ \left(r - \frac{1}{2}\sigma^2\right)\Delta t + \sigma \sqrt{\Delta t}Z \right] $$
 
-S_t
-\exp\left[
-\left(r - \frac{1}{2}\sigma^2\right)\Delta t
-+
-\sigma \sqrt{\Delta t}Z
-\right]
-$$
+where $Z \sim N(0,1)$.
 
-where:
-
-$$
-Z \sim N(0,1)
-$$
 
 This allows the model to simulate many possible future fund paths.
 
@@ -93,14 +79,7 @@ The model simulates many possible scenarios. In each scenario:
 
 The fair price estimator is:
 
-$$
-\hat{V}
-=======
-
-\frac{1}{N}
-\sum_{i=1}^{N}
-e^{-r\tau_i}C_{\tau_i}
-$$
+$$\hat{V} = \frac{1}{N} \sum_{i=1}^{N}e^{-r\tau_i}C_{\tau_i}$$
 
 where:
 
@@ -128,54 +107,25 @@ If none of these events occurs before maturity, the policyholder is treated as h
 
 The total competing risk intensity is:
 
-$$
-\lambda_{\text{total}}
-======================
-
-\lambda_{\text{death}}
-+
-\lambda_{\text{lapse}}
-+
-\lambda_{\text{disability}}
-$$
+$$\lambda_{\text{total}} = \lambda_{\text{death}} + \lambda_{\text{lapse}} + \lambda_{\text{disability}}$$
 
 The probability that any event occurs during a small time interval $\Delta t$ is:
 
-$$
-p_{\text{event}}
-================
-
-1 - e^{-\lambda_{\text{total}}\Delta t}
-$$
+$$p_{\text{event}} = 1 - e^{-\lambda_{\text{total}}\Delta t}$$
 
 If an event occurs, the event type is selected using relative weights.
 
 For death:
 
-$$
-P(\text{Death} \mid \text{Event})
-=================================
-
-\frac{\lambda_{\text{death}}}{\lambda_{\text{total}}}
-$$
+$$P(\text{Death} \mid \text{Event}) = \frac{\lambda_{\text{death}}}{\lambda_{\text{total}}}$$
 
 For lapse:
 
-$$
-P(\text{Lapse} \mid \text{Event})
-=================================
-
-\frac{\lambda_{\text{lapse}}}{\lambda_{\text{total}}}
-$$
+$$P(\text{Lapse} \mid \text{Event}) = \frac{\lambda_{\text{lapse}}}{\lambda_{\text{total}}}$$
 
 For disability:
 
-$$
-P(\text{Disability} \mid \text{Event})
-======================================
-
-\frac{\lambda_{\text{disability}}}{\lambda_{\text{total}}}
-$$
+$$P(\text{Disability} \mid \text{Event}) = \frac{\lambda_{\text{disability}}}{\lambda_{\text{total}}}$$
 
 This means the first event to occur determines the policy outcome.
 
@@ -189,12 +139,7 @@ The payoff depends on the simulated event type.
 
 If death occurs before maturity, the payoff is:
 
-$$
-C_{\tau}
-========
-
-\max(B_{\text{death}}, S_{\tau})
-$$
+$$C_{\tau} = \max(B_{\text{death}}, S_{\tau})$$
 
 where:
 
@@ -205,12 +150,7 @@ where:
 
 If lapse occurs before maturity, the payoff is the surrender value:
 
-$$
-C_{\tau}
-========
-
-S_{\tau}(1 - q)
-$$
+$$C_{\tau} = S_{\tau}(1 - q)$$
 
 where:
 
@@ -221,12 +161,7 @@ where:
 
 If disability occurs before maturity, the payoff is:
 
-$$
-C_{\tau}
-========
-
-\max(B_{\text{disability}}, S_{\tau})
-$$
+$$C_{\tau} = \max(B_{\text{disability}}, S_{\tau})$$
 
 where:
 
@@ -237,12 +172,7 @@ where:
 
 If the policyholder survives to maturity, the payoff is:
 
-$$
-C_T
-===
-
-\max(S_T, G)
-$$
+$$C_T = \max(S_T, G)$$
 
 where:
 
@@ -257,12 +187,7 @@ Each payoff is discounted back to the present using the risk-free rate.
 
 The discounted payoff is:
 
-$$
-PV
-==
-
-e^{-r\tau}C_{\tau}
-$$
+$$PV = e^{-r\tau}C_{\tau}$$
 
 where:
 
@@ -281,24 +206,15 @@ The final fair price is the average of all simulated present values.
 
 The maturity payoff is:
 
-$$
-\max(S_T, G)
-$$
+$$\max(S_T, G)$$
 
 This can be rewritten as:
 
-$$
-\max(S_T, G)
-============
-
-S_T + \max(G - S_T, 0)
-$$
+$$\max(S_T, G) = S_T + \max(G - S_T, 0)$$
 
 The second term,
 
-$$
-\max(G - S_T, 0)
-$$
+$$\max(G - S_T, 0)$$
 
 is equivalent to a European put option with strike price $G$.
 
@@ -312,47 +228,19 @@ The project includes a Black-Scholes benchmark for the embedded maturity guarant
 
 The Black-Scholes put option value is:
 
-$$
-P
-=
-
-## G e^{-rT}N(-d_2)
-
-S_0N(-d_1)
-$$
+$$P = G e^{-rT}N(-d_2)S_0N(-d_1)$$
 
 where:
 
-$$
-d_1
-===
-
-\frac{
-\ln\left(\frac{S_0}{G}\right)
-+
-\left(r + \frac{1}{2}\sigma^2\right)T
-}{
-\sigma\sqrt{T}
-}
-$$
+$$d_1 = \frac{\ln\left(\frac{S_0}{G}\right)+\left(r + \frac{1}{2}\sigma^2\right)T}{\sigma\sqrt{T}}$$
 
 and:
 
-$$
-d_2
-===
-
-d_1 - \sigma\sqrt{T}
-$$
+$$d_2 = d_1 - \sigma\sqrt{T}$$
 
 The guaranteed maturity benchmark is:
 
-$$
-V_{\text{benchmark}}
-====================
-
-S_0 + P
-$$
+$$V_{\text{benchmark}} = S_0 + P$$
 
 This benchmark only values the maturity guarantee. It does not include death, lapse, disability, or surrender benefits.
 
@@ -364,9 +252,7 @@ The Monte Carlo maturity guarantee value is compared against the Black-Scholes b
 
 This validation ignores competing risks and focuses only on:
 
-$$
-\max(S_T, G)
-$$
+$$\max(S_T, G)$$
 
 The purpose is to check whether the simulated market model behaves consistently with the analytical Black-Scholes result.
 
